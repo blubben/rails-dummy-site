@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   validates :password, length: { minimum: 6 }
 
-  attr_accessible :email, :name, :password, :password_confirmation
+  #attr_accessible :email, :name, :password, :password_confirmation
   before_save { self.email = email.downcase }
   has_secure_password
 end
