@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+  def index
+    if(signed_in?)
+      redirect_to current_user
+    else
+      redirect_to '/signin'
+    end
+
+  end
+
   def show
     if(signed_in?)
       @user = User.find(params[:id])
