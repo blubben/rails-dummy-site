@@ -1,0 +1,12 @@
+<h1>Listing posts</h1>
+<% if logged_in?(@user) %>
+<h2>
+<%= link_to 'New post', new_user_post_path %>
+</h2>
+<% end %>
+<ol>
+  <% @posts.each do |post| %>
+    <li><%= link_to post.title, user_post_path(@user,post) %></li>
+  <% end %>
+</ol>
+</table>

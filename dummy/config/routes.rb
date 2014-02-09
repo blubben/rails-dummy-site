@@ -1,5 +1,8 @@
 Dummy::Application.routes.draw do
-  resources :users
+  resources :users do
+    resources :posts
+  end
+
   resources :sessions, only: [:new, :create, :destroy]
 
   root :to => 'users#index'
