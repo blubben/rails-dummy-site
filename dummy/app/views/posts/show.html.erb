@@ -8,5 +8,6 @@
 
 <%= link_to 'Back', user_posts_path %>
 <% if logged_in?(@user) %>
-  | <%= link_to 'Edit', edit_user_post_path(@user, @post) %>
+  | <%= link_to 'Edit', edit_user_post_path(@user, @post) %> |
+  <%= link_to 'Delete', user_post_path(@user, @post), method: :delete, data: { confirm: 'Are you sure?' } %>
 <% end %>

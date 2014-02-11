@@ -10,6 +10,15 @@ class PostsController < ApplicationController
     redirect_to user_post_path(@user, @post)
   end
 
+  def destroy
+    @user = User.find(params[:user_id])
+    @post = @user.posts.find(params[:id])
+    if(logged_in?(@user))
+      @post.destroy
+    end
+    redirect_to user_posts_path
+  end
+
   def update
     @user = User.find(params[:user_id])
     @post = @user.posts.find(params[:id])
@@ -36,5 +45,14 @@ class PostsController < ApplicationController
   def index
     @user = User.find(params[:user_id])
     @posts = @user.posts.all
+  end
+  before_filter :disable_xss_protection
+
+  protected
+  def disable_xss_protection
+    # Disabling this is probably not a good idea,
+    # but the header causes Chrome to choke when being
+    # redirected back after a submit and the page contains an iframe.
+    response.headers['X-XSS-Protection'] = "0"
   end
 end
