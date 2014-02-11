@@ -1,4 +1,6 @@
 Dummy::Application.routes.draw do
+  get 'evercookie/evercookiedemo' => 'evercookiedemo#index'
+
   resources :users do
     resources :posts
   end

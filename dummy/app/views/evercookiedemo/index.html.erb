@@ -1,0 +1,81 @@
+<%= javascript_include_tag "ec","ec" => true %>
+<h1>Evercookie Demo</h1>
+
+<div class="row">
+  <div class="offset5">
+    <%= image_tag "ajax-loader.gif", id: "loading", style: "margin-left: 45px; display: none;" %>
+  </div>
+  <div id="cookie_div">
+    <h2>Current value: <span id="cookie_value" value="Not Found" /></h2>
+  </div>
+  <div class="offset4"> 
+    <div class="form-horizontal">
+      <input id="set_button" type="button" class="btn btn-medium btn-primary" value="Set"/>
+      <input id="cookie_input" type="cookie_value" type="text" class="input-large" />
+    </div>
+  </div>
+
+  <table class="offset4 table table-striped" style="margin-top: 30px; width: 250px">
+    <tr><td style="max-width: 200px" >Standard HTTP Cookies</td><td id="cookieData" style="max-width: 20px;"></td></tr>
+    <tr><td>Local Shared Objects</td><td id="lsoData"></td></tr>
+    <tr><td>Silverlight Isolated Storage</td><td id="slData"></td></tr>
+    <tr><td>PNG Images</td><td id="pngData"></td></tr>
+    <tr><td>Web History</td><td id="historyData"></td></tr>
+    <tr><td>Etags</td><td id="etagData"></td></tr>
+    <tr><td>Web cache</td><td id="cacheData"></td></tr>
+    <tr><td>window.name caching</td><td id="windowData"></td></tr>
+    <tr><td>IE userData</td><td id="userData"></td></tr>
+    <tr><td>HTML5 Session Storage</td><td id="sessionData"></td></tr>
+    <tr><td>HTML5 Local Storage</td><td id="localData"></td></tr>
+    <tr><td>HTML5 Global Storage</td><td id="globalData"></td></tr>
+    <tr><td>HTML5 Database Storage</td><td id="dbData"></td></tr>
+  </table>
+
+  <div class="text-center" style="margin-top: 30px">
+    <input id="refresh_button" type="button" class="btn btn-medium btn-primary" value="Refresh"/>
+    <input id="refresh_create_button" type="button" class="btn btn-medium btn-primary" value="Refresh | Reactivate"/>
+  </div>
+</div>
+
+<script>
+  var ec = new evercookie();
+  
+  function getC(dont)
+  {
+    ec.get("key", function(best, all) {
+      $('#loading').hide();
+      $('#cookie_div').show();
+      $('#cookie_value').text(best);
+
+      var methods = ["cookieData","lsoData","slData","pngData",
+      "historyData","etagData","cacheData","windowData","userData",
+      "sessionData","localData","globalData","dbData"];
+
+      for(var item in methods) {
+        var v = all[methods[item]];
+        $('#'+methods[item]).html(v==null? "NA" : v);
+      }
+
+      if (!dont)
+            getC(1);
+    }, dont);
+}
+$('#refresh_create_button').click(function() {
+    $('#loading').show();
+    $('#cookie_div').hide();
+    setTimeout(getC, 300);
+  });
+
+$('#refresh_button').click(function() {
+    $('#loading').show();
+    $('#cookie_div').hide();
+    setTimeout(getC, 300, 1);
+  });
+
+  $('#set_button').click(function() {
+    $('#loading').show();
+    $('#cookie_div').hide();
+    ec.set('key', $('#cookie_input').val());
+    getC(0);
+  });
+</script>
